@@ -1,0 +1,212 @@
+#pnlWebCall .inner {
+    margin-left : 10px;
+    width : 220px;
+}
+
+#pnlWebCall h1 {
+    font-weight : bold;
+    font-size   : 18px;
+
+    text-align : center;
+}
+
+#pnlWebCall h2 {
+    font-weight : bold;
+    font-size   : 14px;
+}
+
+#pnlWebCall .padding {
+    padding-left : 28px;
+    width : 162px;
+}
+
+#pnlWebCall .long {
+    width : 158px;
+}
+
+#pnlWebCall .btnConnect {
+    margin-top  : 20px;
+    margin-left : 28px;
+}
+
+#pnlWebCall .logo {
+    margin-top : 8px;
+}
+
+#pnlWebCall .connected {
+    white-space : nowrap;
+}
+
+#pnlWebCall .disconnected, #pnlWebCall .error .msgError {
+    height : 180px;
+}
+
+#pnlWebCall.conf .disconnected, #pnlWebCall.conf .error .msgError {
+    height : 140px;
+}
+
+#pnlWebCall .disconnected input {
+    margin-bottom : 4px;
+}
+
+#pnlWebCall .disconnected input, #pnlWebCall .disconnected .label {
+    width : 216px;
+}
+
+#pnlWebCall .divPlayTestSound {
+    text-align : center;
+}
+
+/* status/slider/meter */
+
+#pnlWebCall .status {
+    font-size : 20px;
+    font-weight : bold;
+
+    color : #34495E;
+
+    text-align : center;
+}
+
+#pnlWebCall .meters {
+    color : #34495E;
+    margin-bottom : 4px;
+}
+
+#pnlWebCall .ctlInputMeter {
+    margin-left : 4px;
+    width : 132px;
+    height : 8px;
+    margin-top : 4px;
+    border   : 1px solid black;
+}
+
+#pnlWebCall .muted, #pnlWebCall .hold {
+    width : 156px;
+    text-align : center;
+    height : 16px;
+    padding-top : 4px;
+}
+
+#pnlWebCall div.meter {
+    background-color : #34495E;
+    height : 10px;
+    width : 0px;
+    margin : 0;
+    padding : 0;
+}
+
+/* buttons */
+
+#pnlWebCall .pnlButtons .button {
+    width         : 48px;
+    height        : 36px;
+    margin        : 2px;
+}
+
+#pnlWebCall .pnlButtons .button .icon {
+    height : 20px;
+    width  : 20px;
+}
+
+#pnlWebCall .pnlButtons .button .ui-button-text {
+    margin-left : 4px;
+    margin-top : 4px;
+}
+
+#pnlWebCall .divDialpad .ui-button-text {
+    margin : 0 !important;
+}
+
+#pnlWebCall .button.left {
+    margin-left : 0;
+}
+
+#pnlWebCall .button .digit {
+    font-size : 14px;
+}
+
+#pnlWebCall .button.dtmf_star .digit {
+    font-size : 20px !important;
+}
+
+#pnlWebCall .button .label {
+    font-weight : normal;
+    font-size   : 10px;
+}
+
+/* btnHold */
+
+#pnlWebCall .btnHold .icon {
+    background-image : url(../img/unhold.png);
+}
+
+#pnlWebCall .btnHold.ui-state-hover .icon {
+    background-image : url(../img/unhold_hover.png);
+}
+
+#pnlWebCall .btnHold.ui-state-error .icon {
+    background-image : url(../img/hold.png);
+}
+
+#pnlWebCall .btnHold.ui-state-error.ui-state-hover .icon {
+    background-image : url(../img/hold_hover.png);
+}
+
+/* btnMute */
+
+#pnlWebCall .btnMute .icon {
+    background-image : url(../img/mic.png);
+}
+
+#pnlWebCall .btnMute.ui-state-hover .icon {
+    background-image : url(../img/mic_hover.png);
+}
+
+#pnlWebCall .btnMute.ui-state-error .icon {
+    background-image : url(../img/mic_off.png);
+}
+
+#pnlWebCall .btnMute.ui-state-error.ui-state-hover .icon {
+    background-image : url(../img/mic_off_hover.png);
+}
+
+/* btnSettings */
+
+#pnlWebCall .btnSettings .icon {
+    background-image : url(../img/settings.png);
+}
+
+#pnlWebCall .btnSettings.ui-state-hover .icon {
+    background-image : url(../img/settings_hover.png);
+}
+
+/* btnOpenDialpad */
+
+#pnlWebCall .btnOpenDialpad .icon {
+    background-image : url(../img/dialpad.png);
+}
+
+#pnlWebCall .btnOpenDialpad.ui-state-hover .icon {
+    background-image : url(../img/dialpad_hover.png);
+}
+
+#pnlWebCall .btnDisconnect, #pnlWebCall .btnClose {
+    width : 158px;
+}
+
+#pnlWebCall .btnDisconnect {
+    margin-top : 2px;
+}
+
+#pnlWebCall .msgError div {
+    padding-top : 50px;
+    color : red;
+}
+
+#pnlUnsupported {
+    padding : 10px;
+    font-size : 20px;
+    font-weight : bold;
+    color : #34495E;
+}

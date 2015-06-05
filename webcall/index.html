@@ -1,0 +1,316 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <link type="text/css" rel="stylesheet" href="css/reset.css"/>
+    <link type="text/css" rel="stylesheet" href="css/base.css"/>
+    <link type="text/css" rel="stylesheet" href="css/ext/jquery-ui.css"/>
+    
+<meta name="viewport" content="width=240"/>
+<link type="text/css" rel="stylesheet" href="css/webCall.css"/>
+<link type="text/css" rel="stylesheet" href="css/webCall-conf.css"/>
+
+
+    <script type="text/javascript" src="js/ext/jquery-1.10.2.js"></script>
+    <script type="text/javascript" src="js/ext/jquery-ui-1.11.4.js"></script>
+
+    
+
+<script type="text/javascript">
+    /* <![CDATA[ */
+    app = {
+        config : {
+            WEBCALL_SAVE_FIELDS_COOKIE_NAME    : "webCallSaveFields",
+            WEBCALL_SAVE_FIELDS_COOKIE_MAX_AGE : 365,
+            WEBCALL_MIN_GAIN                   : -15,
+            WEBCALL_MAX_GAIN                   : 15,
+            params : {
+                wsSipURI   : "wss://ws.turbobridge.com",
+                conferenceID   : "",
+                fromName       : "",
+                email          : "",
+                toUriPrefix    : "sip:bridge#",
+                toUriSuffix    : "@turbobridge.com;direct=1;sendStatus=MESSAGE",
+            }
+        }
+    };
+	/* ]]> */
+</script>
+
+<script type="text/javascript" src="js/ext/jssip-0.6.19.js"></script>
+<script type="text/javascript" src="js/ext/volume-meter.js"></script>
+<script type="text/javascript" src="js/ext/stacktrace.js"></script>
+<script type="text/javascript" src="js/dropdown.js"></script>
+<script type="text/javascript" src="js/cookie.js"></script>
+<script type="text/javascript" src="js/validate.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/form.js"></script>
+<script type="text/javascript" src="js/webCall-client.js"></script>
+<script type="text/javascript" src="js/webCall-ui.js"></script>
+<script type="text/javascript" src="js/webCall-conf-lib.js"></script>
+<script type="text/javascript" src="js/webCall-conf-ui.js"></script>
+<script type="text/javascript" src="js/webCall-conf-launch.js"></script>
+
+
+    <script type="text/javascript">
+    /* <![CDATA[ */
+
+	
+app.localeStrings = {
+"lblMute" : "Mute",
+"lblUnMute" : "Un-Mute",
+"lbl1" : "1",
+"lbl2" : "2",
+"lbl3" : "3",
+"lbl4" : "4",
+"lbl5" : "5",
+"lbl6" : "6",
+"lbl7" : "7",
+"lbl8" : "8",
+"lbl9" : "9",
+"lbl0" : "0",
+"lblStar" : "*",
+"lblPound" : "#",
+"lblPlayTestSound" : "Play Test Sound",
+"lblSendInfoMsg" : "Send Info Msg",
+"lblContentType" : "Content Type",
+"lblName" : "Name",
+"lblCall" : "Call",
+"lblClear" : "Clear",
+"lblEnd" : "End",
+"lblConnected" : "Connected",
+"lblRinging" : "Ringing",
+"lblConnecting" : "Connecting",
+"lblCancel" : "Cancel",
+"lblError" : "Error",
+"lblOK" : "OK",
+"lblMuteSpeaker" : "Mute Speaker",
+"lblUnMuteSpeaker" : "Un-Mute Speaker",
+"lblDisconnected" : "Disconnected",
+"lblHold" : "Hold",
+"lblUnhold" : "Unhold",
+"lblWsURI" : "WS URI",
+"lblFromName" : "From Name",
+"lblFromURI" : "SIP From URI",
+"lblToURI" : "SIP To URI",
+"lblConferenceID" : "Conference ID",
+"lblEmail" : "Email",
+"lblListenOnlyMode" : "Listen Only Mode",
+"lblABC" : "ABC",
+"lblDEF" : "DEF",
+"lblGHI" : "GHI",
+"lblJKL" : "JKL",
+"lblMNO" : "MNO",
+"lblPQRS" : "PQRS",
+"lblTUV" : "TUV",
+"lblWXYZ" : "WXYZ",
+"lblOnHold" : "On Hold",
+"lblMuted" : "Muted",
+"lblFeatureUnsupportedOnYourBrowser" : "This feature is not supported by your browser",
+"lblMicrophoneSource" : "Microphone Source",
+"lblOptions" : "Options",
+"lblAutomaticGainControl" : "Automatic Gain Control",
+"lblNoiseSuppression" : "Noise Suppression",
+"lblEchoCancellation" : "Echo Cancellation",
+"lblDtmfKeypad" : "DTMF Keypad",
+"lblWebCallUnsupported" : "WebCall is not supported by your browser",
+"lblRecording" : "Recording",
+"lblConferenceLocked" : "Conference Locked",
+"lblPending" : "Waiting",
+"lblActive" : "Active",
+"lblMode" : "Mode",
+"lblQuestionAnswer" : "Question & Answer",
+"lblConversation" : "Conversation",
+"lblPresentation" : "Presentation",
+"lblHostsOnly" : "Hosts Only",
+"lblChangeRole" : "Become A Host",
+"lblLock" : "Lock Conference",
+"lblRecordCalls" : "Record Calls",
+"lblHostPin" : "Host PIN",
+"lblUnlock" : "Unlock Conference",
+"lblStartRecording" : "Start Recording",
+"lblStopRecording" : "Stop Recording",
+"lblStartConf" : "Host Confirm",
+"lblHost" : "Host",
+"lblAreYouSureEndConf" : "End Conference?",
+"lblToUriPrefix" : "To URI Prefix",
+"lblToUriSuffix" : "To URI Suffix",
+"lblWebSocketURI" : "Web Socket URI",
+"lblRaiseHand" : "Raise Hand",
+"lblLowerHand" : "Lower Hand",
+"lblToggleKeypad" : "DTMF Keypad",
+"lblSettings" : "Settings",
+"lblEndConference" : "End Conference",
+"lblMusicOn" : "Music On",
+"lblMusicOff" : "Music Off",
+};
+app.errors = {
+"ERR_INVALID_EMAIL" : "The email address is invalid.",
+"ERR_INVALID_CONFERENCE_ID" : "The Conference ID is invalid.",
+"ERR_WEBCALL_WS_CONNECT_FAILED" : "There was an error connecting to the SIP WebSocket.",
+"ERR_WEBCALL_SIP_CONNECT_FAILED" : "There was an error placing a call through the SIP WebSocket.",
+"ERR_WEBCALL_NAVIGATE_AWAY" : "Are you sure you want to navigate away from this page? Your call will be disconnected",
+"ERR_WEBCALL_STATUS_486" : "The Conference capacity is exceeded.",
+"ERR_WEBCALL_STATUS_406" : "The Conference is locked.",
+"ERR_WEBCALL_STATUS_404" : "The Conference ID is invalid.",
+"ERR_WEBCALL_STATUS_430" : "The PIN is invalid.",
+"ERR_WEBCALL_STATUS_431" : "The Conference is disabled.",
+"ERR_WEBCALL_STATUS_432" : "The Conference is blocked.",
+"ERR_WEBCALL_STATUS_433" : "Toll-Free is disabled.",
+"ERR_WEBCALL_STATUS_480" : "partner validate error / other failure.",
+};
+
+	
+	/* ]]> */
+    </script>
+    <title>Web Call</title>
+  </head>
+  <body>
+    
+<div id="container">
+  <div id="pnlWebCall" class="conf">
+    <div class="inner">
+      <audio class="audTestSound hidden">
+        <source src="audio/testSound.wav"/>
+      </audio>
+      <audio class="audDtmf hidden">
+        <source src="audio/beep.wav"/>
+      </audio>
+
+            <img alt="" src="img/logo-light.png" width="220" height="30" class="logo"/><br/>
+            
+      <div class="disconnected">
+                <div class="label">Conference ID</div>
+        <input type="tel" id="wp_conferenceID" value=""/>
+        
+        <div class="label">Name</div>
+        <input type="text" id="wp_fromName" value=""/>
+        
+        <div class="label">Email</div>
+        <input type="email" id="wp_email" value=""/>
+
+        <div class="frmDebug hidden">
+          <div class="label">Web Socket URI</div>
+          <input type="text" id="wp_wsSipURI" value=""/>
+          
+          <div class="label">To URI Prefix</div>
+          <input type="text" id="wp_toUriPrefix" value=""/>
+
+          <div class="label">To URI Suffix</div>
+          <input type="text" id="wp_toUriSuffix" value=""/>
+        </div>
+                <div class="divPlayTestSound">
+          <a href="#" class="btnTestSound">Play Test Sound</a>
+        </div>
+
+        <button class="btnConnect long button">Call</button>
+      </div>
+
+      <div class="padding">
+        <div class="connected hidden">
+          <div class="status"><div class="ringing">Connecting</div><div class="confStatus"></div><div class="btnStartConference long">Host Confirm</div><div class="timer"></div></div>
+
+          <div class="meters">
+                        <div class="output">
+              <img alt="" src="img/speaker.png" height="20" width="20" class="floatLeft"/>
+              <div class="ctlOutputGain floatLeft"></div>
+              <div class="divClear"></div>
+            </div>
+                        <div class="micConnected">
+              <div class="divInputMeter">
+                <img alt="" src="img/mic.png" height="20" width="20" class="floatLeft"/>
+                <div class="ctlInputMeter floatLeft"></div>
+              </div>
+              
+              <div class="muted hidden">Muted</div>
+              <div class="hold hidden">On Hold</div>
+            </div>
+            <div class="divClear"></div>
+            <div class="micDisconnected">Listen Only Mode</div>
+          </div>
+
+                    <select class="confMode long">
+            <option value="qa">Question &amp; Answer</option>
+            <option value="conversation">Conversation</option>
+            <option value="presentation">Presentation</option>
+            <option value="hostsOnly">Hosts Only</option>
+          </select>
+          <br/>
+                    
+          <div class="pnlButtons"><div class="button btnHold left"><div class="icon"></div><span class="tooltip">Hold</span><span class="tooltipOn">Unhold</span></div><div class="button btnMute"><div class="icon"></div><span class="tooltip">Mute</span><span class="tooltipOn">Un-Mute</span></div><div class="button btnHand"><div class="icon"></div><span class="tooltip">Raise Hand</span><span class="tooltipOn">Lower Hand</span></div><br/><div class="button btnLock left"><div class="icon"></div><span class="tooltip">Lock Conference</span><span class="tooltipOn">Unlock Conference</span></div><div class="button btnRecording"><div class="icon"></div><span class="tooltip">Start Recording</span><span class="tooltipOn">Stop Recording</span></div><div class="button btnMusic"><div class="icon"></div><span class="tooltip">Music On</span><span class="tooltipOn">Music Off</span></div><br/><div class="button btnOpenDialpad left"><div class="icon"></div><span class="tooltip">DTMF Keypad</span></div><div class="button btnSettings"><div class="icon"></div><span class="tooltip">Settings</span></div><div class="button btnChangeRole"><div class="icon"></div><span class="tooltip"></span></div><br/></div><div class="divDialpad pnlButtons hidden"><div class="button dtmf dtmf_1 left"><div class="digit">1</div></div><div class="button dtmf dtmf_2"><div class="digit">2</div><div class="label">ABC</div></div><div class="button dtmf dtmf_3"><div class="digit">3</div><div class="label">DEF</div></div><br/><div class="button dtmf dtmf_4 left"><div class="digit">4</div><div class="label">GHI</div></div><div class="button dtmf dtmf_5"><div class="digit">5</div><div class="label">JKL</div></div><div class="button dtmf dtmf_6"><div class="digit">6</div><div class="label">MNO</div></div><br/><div class="button dtmf dtmf_7 left"><div class="digit">7</div><div class="label">PQRS</div></div><div class="button dtmf dtmf_8"><div class="digit">8</div><div class="label">TUV</div></div><div class="button dtmf dtmf_9"><div class="digit">9</div><div class="label">WXYZ</div></div><br/><div class="button dtmf dtmf_star left"><div class="digit">*</div></div><div class="button dtmf dtmf_0"><div class="digit">0</div></div><div class="button dtmf dtmf_pound"><div class="digit">#</div></div></div>
+          <button class="btnDisconnect long button">End</button>
+        </div>
+
+        <div class="error hidden">
+          <div class="msgError">
+            <div></div>
+          </div>
+
+          <button class="btnClose long button">OK</button>
+        </div>
+
+                <div class="pnlInputDialog hidden">
+          <div class="divInputDialog">
+            <div class="divEndConference">
+              End Conference?
+            </div>
+            <div class="divPin">
+              Host PIN<br/>
+              <input type="tel" class="txtPin"/>
+            </div>
+          </div>
+          <button class="btnInputSubmit button">OK</button>
+          <button class="btnInputCancel button">Cancel</button>
+        </div>
+        
+        <div class="pnlSettings hidden">
+          <h1>Settings</h1>
+          <span class="unsupported">This feature is not supported by your browser</span>
+
+          <div class="supported">
+            <div class="sources">
+              <h2>Microphone Source</h2>
+
+              <div class="insertMarker"></div>
+            </div>
+
+            <div class="options">
+              <h2>Options</h2>
+              <input type="checkbox" id="wo_autoGainControl"/><label for="wo_autoGainControl">Automatic Gain Control</label><br/>
+              <input type="checkbox" id="wo_noiseSuppression"/><label for="wo_noiseSuppression">Noise Suppression</label><br/>
+              <input type="checkbox" id="wo_echoCancellation"/><label for="wo_echoCancellation">Echo Cancellation</label>
+            </div>
+          </div>
+
+          <button class="btnClose long button">OK</button>
+        </div>
+      </div>
+    </div>
+
+        <div class="debug hidden">
+      <div class="sendCommand">
+        Command<br/>
+        <select class="commandName">
+        </select><br/>
+        Value
+        <input type="text" class="commandValue"/>
+        <button class="btnSendCommand button">Send</button>
+      </div>
+      <br/><br/>
+      
+      Status<br/>
+      <table>
+
+      </table>
+    </div>
+    
+      </div>
+  <div id="pnlUnsupported" class="hidden">
+    WebCall is not supported by your browser
+  </div>
+</div>
+
+    
+    
+  </body>
+</html>

@@ -1,0 +1,147 @@
+#pnlWebCall .debug {
+    position : absolute;
+    top : 0;
+    left : 300px;
+}
+
+/* slider/meter */
+
+#pnlWebCall .ctlOutputGain {
+    margin-left : 4px;
+    width : 132px;
+    height : 8px;
+    margin-top : 4px;
+    border   : 1px solid black;
+}
+
+#pnlWebCall .ctlOutputGain .ui-slider-handle {
+    margin-left : -4px;
+    width : 8px;
+}
+
+#pnlWebCall .ui-selectmenu-button.ui-state-disabled {
+    opacity : 1;
+}
+
+#pnlWebCall .tooltip, #pnlWebCall .tooltipOn {
+    display : none;
+}
+
+#pnlWebCall .ui-selectmenu-text {
+    font-size : 12px;
+}
+
+#pnlWebCall .divInputDialog {
+    margin-top : 30px;
+    margin-bottom : 30px;
+}
+
+#pnlWebCall .btnInputSubmit, #pnlWebCall .btnInputCancel {
+    width : 76px;
+}
+
+#pnlWebCall .btnStartConference {
+    margin-bottom : 4px;
+}
+
+/* btnHand */
+
+#pnlWebCall .btnHand .icon {
+    background-image : url(../img/conf/hand.png);
+}
+
+#pnlWebCall .btnHand.ui-state-hover .icon {
+    background-image : url(../img/conf/hand_hover.png);
+}
+
+#pnlWebCall .btnHand.ui-state-error .icon {
+    background-image : url(../img/conf/hand_selected.png);
+}
+
+#pnlWebCall .btnHand.ui-state-error.ui-state-hover .icon {
+    background-image : url(../img/conf/hand_selected_hover.png);
+}
+
+/* btnLock */
+
+#pnlWebCall .btnLock .icon {
+    background-image : url(../img/conf/unlock.png);
+}
+
+#pnlWebCall .btnLock.ui-state-hover .icon {
+    background-image : url(../img/conf/unlock_hover.png);
+}
+
+#pnlWebCall .btnLock.locked .icon {
+    background-image : url(../img/conf/lock.png);
+}
+
+#pnlWebCall .btnLock.locked.ui-state-hover .icon {
+    background-image : url(../img/conf/lock_hover.png);
+}
+
+/* btnChangeRole */
+
+#pnlWebCall .btnChangeRole .icon {
+    background-image : url(../img/conf/changeRole.png);
+}
+
+#pnlWebCall .btnChangeRole.ui-state-hover .icon {
+    background-image : url(../img/conf/changeRole_hover.png);
+}
+
+/* btnEndConference */
+
+#pnlWebCall .btnEndConference .icon {
+    background-image : url(../img/conf/endConference.png);
+}
+
+#pnlWebCall .btnEndConference.ui-state-hover .icon {
+    background-image : url(../img/conf/endConference_hover.png);
+}
+
+/* btnRecording */
+
+#pnlWebCall .btnRecording .icon {
+    background-image : url(../img/conf/recording_off.png);
+}
+
+#pnlWebCall .btnRecording.ui-state-hover .icon {
+    background-image : url(../img/conf/recording_off_hover.png);
+}
+
+#pnlWebCall .btnRecording.ui-state-error .icon {
+    background-image : url(../img/conf/recording.png);
+}
+
+#pnlWebCall .btnRecording.ui-state-error.ui-state-hover .icon {
+    background-image : url(../img/conf/recording_hover.png);
+}
+
+/* btnMusic */
+
+#pnlWebCall .btnMusic .icon {
+    background-image : url(../img/conf/music_off.png);
+}
+
+#pnlWebCall .btnMusic.ui-state-hover .icon {
+    background-image : url(../img/conf/music_off_hover.png);
+}
+
+#pnlWebCall .btnMusic.ui-state-error .icon {
+    background-image : url(../img/conf/music.png);
+}
+
+#pnlWebCall .btnMusic.ui-state-error.ui-state-hover .icon {
+    background-image : url(../img/conf/music_hover.png);
+}
+
+/* muteLocked */
+
+#pnlWebCall .btnMute.ui-state-disabled .icon {
+    background-image : url(../img/conf/muteLocked_unmuted.png);
+}
+
+#pnlWebCall .btnMute.ui-state-error.ui-state-disabled .icon {
+    background-image : url(../img/conf/muteLocked_muted.png);
+}

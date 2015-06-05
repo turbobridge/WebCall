@@ -1,0 +1,108 @@
+.hidden {
+    display     : none;
+}
+
+.floatLeft {
+    float       : left;
+}
+
+.floatRight {
+    float       : right;
+}
+
+.divClear {
+    clear       : both;
+    display     : block;
+    overflow    : hidden;
+    height      : 0px;
+}
+
+html {
+    height      : 100%;
+}
+
+.alwaysScroll {
+    overflow-y  : scroll;
+}
+
+body {
+    font-size   : 12px;
+    font-family : Arial, sans-serif;
+
+    height      : 100%;
+}
+
+input[type='text']:disabled, input[type='numbers']:disabled, input[type='tel']:disabled, input[type='password']:disabled, input[type='email']:disabled {
+    color            : rgb(84, 84, 84);
+    border-color     : rgb(154, 154, 154);
+    background-color : rgb(235, 235, 228);
+}
+
+input[type='text'], input[type='numbers'], input[type='tel'], input[type='password'], input[type='email'] {
+    height       : 16px;
+    padding      : 1px;
+    border-color : rgb(0, 0, 0);
+    border-style : solid;
+    border-width : 1px;
+}
+
+.bold {
+    font-weight : bold;
+}
+
+.italic {
+    font-style  : italic;
+}
+
+.tblForm td {
+    padding     : 3px;
+}
+
+.tblForm .label {
+    text-align : right;
+    vertical-align : middle;
+}
+
+.tblForm input[type='text'], .tblForm input[type='password'], .tblForm textarea {
+    width : 100%;
+}
+
+td.center {
+    text-align : center;
+}
+
+.lblBoldGreen {
+    color         : #0d7f05;
+    font-weight   : bold;
+}
+
+.darkBlue {
+    color         : #00529b;
+}
+
+.lblNoteStyle1 {
+    color         : #00529b;
+    font-style    : italic;
+}
+
+.lblNoteStyle2 {
+    color         : #a0a0a0;
+    font-style    : italic;
+}
+
+.ui-button.ui-widget {
+    font-size      : 11px !important;
+}
+
+.ui-state-highlight {
+    background : #fffad9 none !important;
+}
+
+.dimmer {
+    filter  : alpha(opacity=30);
+    opacity : 0.3;
+}
+
+a:link, a:visited, a:hover, a:active {
+    color : #2779aa;
+}
