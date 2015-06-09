@@ -19,7 +19,7 @@ To support integration with WebRTC and SIP implementations, which provide call r
 * 433 - WebCall Access method is not allowed
 * 480 - partner validate error / other failure
 
-If direct parameter is not provided, the call will go through a special WebRTC media forwarding service which will intercept all the re-INVITEs from the bridge. If bridge ID is not provided, the call will be accepted and user will be prompted for bridge ID as on the regular PSTN call. If bridge ID in URL is invalid, the announcement will be played and user will be asked to re-enter it. This option should be used for testing purposes only.
+If direct parameter is not provided, the call will go through a special WebRTC media forwarding service which will intercept all the re-INVITEs from the bridge. If bridge ID is not provided, the call will be accepted and user will be prompted for bridge ID as on the regular PSTN call. If bridge ID in the URL is invalid, the announcement will be played and user will be asked to re-enter it. This option should be used for testing purposes only.
 
 TurboBridge announcements are provided in several different languages, which can be selected via "lang" URL parameter, as in "sip:bridge#123123@turbobridge.com;direct=1;lang=pt-pt". Supported languages are:
 * English (US)  - en-us, en, us
