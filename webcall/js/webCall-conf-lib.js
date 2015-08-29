@@ -1,6 +1,6 @@
 "use strict";
 
-if (!window.webCall) window.webCall = {};
+if (!window.WebCall) window.WebCall = {};
 
 WebCall.ConfLib = function(options) {
     this.debug = 1;
@@ -72,8 +72,6 @@ WebCall.ConfLib.prototype._update = function() {
             this.status.data[name] = !!this.status.data[name];
     }
 
-    app.webCallLastCallID = this.status.data.callID;
-
     var muted = this.getMute();
     if (muted != this.client.getMute())
         this.client.setMute(muted);
@@ -129,6 +127,13 @@ WebCall.ConfLib.prototype.getRecording = function() {
         return  this.status.data.recordCall;
 
     return 0;
+};
+
+WebCall.ConfLib.prototype.getCallStatus = function() {
+    if (this.status && this.status.data)
+        return  this.status.data.status;
+
+    return null;
 };
 
 WebCall.ConfLib.prototype.getConfStatus = function() {

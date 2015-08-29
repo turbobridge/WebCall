@@ -115,8 +115,8 @@ $.extend(WebCall.Client.prototype, {
         }
     },
 
-    connect : function(connectData) {
-        this._connectData = connectData;
+    connect : function(connectParams) {
+        this._connectParams = connectParams;
         
         this._reset();
 
@@ -129,7 +129,7 @@ $.extend(WebCall.Client.prototype, {
     },
 
     _connect : function() {
-        this._setSipURIs(this._connectData.toSipURI, this._connectData.fromSipURI);
+        this._setSipURIs(this._connectParams.toSipURI, this._connectParams.fromSipURI);
 
         this._connectWS();
     },
@@ -230,23 +230,23 @@ $.extend(WebCall.Client.prototype, {
     },
 
     _connectWS : function() {
-        var connectData = this._connectData;
+        var connectParams = this._connectParams;
         
         if (this.debug)
-            console.log("WebCall:Client._connectWS()", connectData);
+            console.log("WebCall:Client._connectWS()", connectParams);
 
         this._setState("ringing");
 
         var configuration = {
-            ws_servers   : [ connectData.wsSipURI ],
+            ws_servers   : [ connectParams.wsSipURI ],
             uri          : this.fromURI,
             register     : false,
             trace_sip    : true,
             stun_servers : []
         };
 
-        if (connectData.fromName)
-            configuration.display_name = connectData.fromName;
+        if (connectParams.fromName)
+            configuration.display_name = connectParams.fromName;
 
         try {
             this.ua = new JsSIP.UA(configuration);

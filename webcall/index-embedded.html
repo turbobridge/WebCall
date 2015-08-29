@@ -1,0 +1,216 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <link type="text/css" rel="stylesheet" href="css/reset.css"/>
+    <link type="text/css" rel="stylesheet" href="css/base.css"/>
+    <link type="text/css" rel="stylesheet" href="css/ext/jquery-ui.css"/>
+    <link type="text/css" rel="stylesheet" href="css/embedded-launch.css"/>
+    <script type="text/javascript" src="js/ext/jquery-1.10.2.js"></script>
+    <script type="text/javascript" src="js/ext/jquery-ui-1.11.4.js"></script>
+
+<script type="text/javascript">
+/* <![CDATA[ */
+app = {
+    config : {
+        WEBCALL_MIN_GAIN                   : -15,
+        WEBCALL_MAX_GAIN                   : 15,
+        WEBCALL_SAVE_FIELDS_COOKIE_NAME    : "webCallSaveFields",
+        WEBCALL_SAVE_FIELDS_COOKIE_MAX_AGE : 365,
+        WEBCALL_IFRAME_URI                 : "https://turbobridge.com/webcall/embedded.html",
+        params : {
+            conferenceID : "",
+            fromName : "",
+            email    : "",
+            wsSipURI   : "wss://ws.turbobridge.com",
+            toUriPrefix    : "sip:bridge#",
+            toUriSuffix    : "@turbobridge.com;direct=1;sendStatus=MESSAGE",
+        }
+    }
+};
+/* ]]> */
+</script>
+
+<script type="text/javascript" src="js/cookie.js"></script>
+<script type="text/javascript" src="js/form.js"></script>
+<script type="text/javascript" src="js/validate.js"></script>
+<script type="text/javascript" src="js/webCall-embedded-adapter.js"></script>
+<script type="text/javascript" src="js/webCall-embedded-launch.js"></script>
+
+
+    <script type="text/javascript">
+    /* <![CDATA[ */
+
+
+app.localeStrings = {
+"lblMute" : "Mute",
+"lblUnMute" : "Un-Mute",
+"lbl1" : "1",
+"lbl2" : "2",
+"lbl3" : "3",
+"lbl4" : "4",
+"lbl5" : "5",
+"lbl6" : "6",
+"lbl7" : "7",
+"lbl8" : "8",
+"lbl9" : "9",
+"lbl0" : "0",
+"lblStar" : "*",
+"lblPound" : "#",
+"lblPlayTestSound" : "Play Test Sound",
+"lblSendInfoMsg" : "Send Info Msg",
+"lblContentType" : "Content Type",
+"lblName" : "Name",
+"lblCall" : "Call",
+"lblClear" : "Clear",
+"lblEnd" : "End",
+"lblConnected" : "Connected",
+"lblRinging" : "Ringing",
+"lblConnecting" : "Connecting",
+"lblCancel" : "Cancel",
+"lblError" : "Error",
+"lblOK" : "OK",
+"lblMuteSpeaker" : "Mute Speaker",
+"lblUnMuteSpeaker" : "Un-Mute Speaker",
+"lblDisconnected" : "Disconnected",
+"lblHold" : "Hold",
+"lblUnhold" : "Unhold",
+"lblWsURI" : "WS URI",
+"lblFromName" : "From Name",
+"lblFromURI" : "SIP From URI",
+"lblToURI" : "SIP To URI",
+"lblConferenceID" : "Conference ID",
+"lblEmail" : "Email",
+"lblListenOnlyMode" : "Listen Only Mode",
+"lblABC" : "ABC",
+"lblDEF" : "DEF",
+"lblGHI" : "GHI",
+"lblJKL" : "JKL",
+"lblMNO" : "MNO",
+"lblPQRS" : "PQRS",
+"lblTUV" : "TUV",
+"lblWXYZ" : "WXYZ",
+"lblOnHold" : "On Hold",
+"lblMuted" : "Muted",
+"lblFeatureUnsupportedOnYourBrowser" : "This feature is not supported by your browser",
+"lblMicrophoneSource" : "Microphone Source",
+"lblOptions" : "Options",
+"lblAutomaticGainControl" : "Automatic Gain Control",
+"lblNoiseSuppression" : "Noise Suppression",
+"lblEchoCancellation" : "Echo Cancellation",
+"lblDtmfKeypad" : "DTMF Keypad",
+"lblWebCallUnsupported" : "WebCall is not supported by your browser",
+"lblRecording" : "Recording",
+"lblConferenceLocked" : "Conference Locked",
+"lblPending" : "Waiting",
+"lblActive" : "Active",
+"lblMode" : "Mode",
+"lblQuestionAnswer" : "Question & Answer",
+"lblConversation" : "Conversation",
+"lblPresentation" : "Presentation",
+"lblHostsOnly" : "Hosts Only",
+"lblChangeRole" : "Become A Host",
+"lblLock" : "Lock Conference",
+"lblRecordCalls" : "Record Calls",
+"lblHostPin" : "Host PIN",
+"lblUnlock" : "Unlock Conference",
+"lblStartRecording" : "Start Recording",
+"lblStopRecording" : "Stop Recording",
+"lblStartConf" : "Host Confirm",
+"lblHost" : "Host",
+"lblAreYouSureEndConf" : "End Conference?",
+"lblToUriPrefix" : "To URI Prefix",
+"lblToUriSuffix" : "To URI Suffix",
+"lblWebSocketURI" : "Web Socket URI",
+"lblFinishRecording" : "Finish Recording",
+"lblClose" : "Close",
+"lblRaiseHand" : "Raise Hand",
+"lblLowerHand" : "Lower Hand",
+"lblToggleKeypad" : "DTMF Keypad",
+"lblSettings" : "Settings",
+"lblEndConference" : "End Conference",
+"lblMusicOn" : "Music On",
+"lblMusicOff" : "Music Off",
+};
+app.errors = {
+"ERR_INVALID_EMAIL" : "The email address is invalid.",
+"ERR_INVALID_CONFERENCE_ID" : "The Conference ID is invalid.",
+"ERR_WEBCALL_WS_CONNECT_FAILED" : "There was an error connecting to the SIP WebSocket.",
+"ERR_WEBCALL_SIP_CONNECT_FAILED" : "There was an error placing a call through the SIP WebSocket.",
+"ERR_WEBCALL_NAVIGATE_AWAY" : "Are you sure you want to navigate away from this page? Your call will be disconnected",
+"ERR_WEBCALL_STATUS_486" : "The Conference capacity is exceeded.",
+"ERR_WEBCALL_STATUS_406" : "The Conference is locked.",
+"ERR_WEBCALL_STATUS_404" : "The Conference ID is invalid.",
+"ERR_WEBCALL_STATUS_430" : "The PIN is invalid.",
+"ERR_WEBCALL_STATUS_431" : "The Conference is disabled.",
+"ERR_WEBCALL_STATUS_432" : "The Conference is blocked.",
+"ERR_WEBCALL_STATUS_433" : "Toll-Free is disabled.",
+"ERR_WEBCALL_STATUS_434" : "The User ID is invalid.",
+"ERR_WEBCALL_STATUS_480" : "partner validate error / other failure.",
+};
+
+
+    /* ]]> */
+    </script>
+    <title>Web Call</title>
+  </head>
+  <body>
+
+<div id="pnlWebCall">
+  <div class="inner">
+        <img alt="" src="img/logo-light.png" width="220" height="30" class="logo"/><br/>
+
+    <div class="disconnected">
+      Conference ID<br/>
+      <input type="text" id="wp_conferenceID" val=""/><br/>
+      Name<br/>
+      <input type="text" id="wp_fromName" val=""/><br/>
+      Email<br/>
+      <input type="email" id="wp_email" val=""/><br/>
+
+      <div class="divPlayTestSound">
+          <a href="#" class="btnTestSound">Play Test Sound</a>
+      </div>
+      <button class="btnConnect long">Call</button>
+    </div>
+
+    <iframe class="hidden" scrolling="no"></iframe>
+  </div>
+
+  <div class="hidden">
+    <div id="dlgWebCallError">
+      <div class="msgError"></div>
+    </div>
+
+    <div id="dlgWebCallDialpad"><div class="button dtmf dtmf_1 left"><div class="digit">1</div></div><div class="button dtmf dtmf_2"><div class="digit">2</div><div class="label">ABC</div></div><div class="button dtmf dtmf_3"><div class="digit">3</div><div class="label">DEF</div></div><br/><div class="button dtmf dtmf_4 left"><div class="digit">4</div><div class="label">GHI</div></div><div class="button dtmf dtmf_5"><div class="digit">5</div><div class="label">JKL</div></div><div class="button dtmf dtmf_6"><div class="digit">6</div><div class="label">MNO</div></div><br/><div class="button dtmf dtmf_7 left"><div class="digit">7</div><div class="label">PQRS</div></div><div class="button dtmf dtmf_8"><div class="digit">8</div><div class="label">TUV</div></div><div class="button dtmf dtmf_9"><div class="digit">9</div><div class="label">WXYZ</div></div><br/><div class="button dtmf dtmf_star left"><div class="digit">*</div></div><div class="button dtmf dtmf_0"><div class="digit">0</div></div><div class="button dtmf dtmf_pound"><div class="digit">#</div></div></div>
+
+    <div id="dlgWebCallSettings">
+      <span class="unsupported">This feature is not supported by your browser</span>
+
+      <div class="supported">
+        <div class="sources">
+          <h2>Microphone Source</h2>
+
+          <div class="insertMarker"></div>
+          <br/><br/>
+        </div>
+
+        <div class="options">
+          <h2>Options</h2>
+          <input type="checkbox" id="wo_autoGainControl"/><label for="wo_autoGainControl">Automatic Gain Control</label><br/>
+          <input type="checkbox" id="wo_noiseSuppression"/><label for="wo_noiseSuppression">Noise Suppression</label><br/>
+          <input type="checkbox" id="wo_echoCancellation"/><label for="wo_echoCancellation">Echo Cancellation</label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="pnlUnsupported" class="hidden">
+  WebCall is not supported by your browser
+</div>
+
+
+
+  </body>
+</html>

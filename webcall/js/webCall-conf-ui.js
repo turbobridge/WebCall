@@ -1,6 +1,6 @@
 "use strict";
 
-if (!window.webCall) window.webCall = {};
+if (!window.WebCall) window.WebCall = {};
 
 WebCall.ConfUI = function(options) {
     this.debug = 1;
@@ -9,8 +9,13 @@ WebCall.ConfUI = function(options) {
         console.log("new WebCall.ConfUI()");
 
     this._getConnectParams = options.getConnectParams;
-    if (options.setMuteLocked)
-        this.setMuteLocked = options.setMuteLocked;
+    
+    if (options.setMuteLockedDisplay)
+        this.setMuteLockedDisplay = options.setMuteLockedDisplay;
+    if (options.setHostDisplay)
+        this.setHostDisplay = options.setHostDisplay;
+    if (options.setConfModeDisplay)
+        this.setConfModeDisplay = options.setConfModeDisplay;
 
     this.statusMap = {
         "pending" : app.localeStrings.lblPending,
@@ -30,6 +35,8 @@ WebCall.ConfUI = function(options) {
     this._status              = "pending";
     this._ctlOutputGainActive = false;
     this._confStartMode       = "instant";
+
+    this._callStatus          = null;
     
     this._commands = {
         changeRole : {
@@ -181,21 +188,24 @@ WebCall.ConfUI.prototype._setupEvents = function() {
     $("#pnlWebCall .btnStartConference").click(function(event) {
         self.confLib.startConference();
     });
+
+    $("#pnlWebCall .btnRecordName").click(function(event) {
+        self.ui.client.sendDTMF("#");
+    });
     
     $("#pnlWebCall .btnRecording").click(function(event) {
         self.toggleRecording();
     });
 
-    $("#pnlWebCall .confMode").dropdown({
-        //label          : app.localeStrings.lblMode,
-        //width          : "100%",
-        select         : function(event, ui) {
-            if (!event.currentTarget)
-                return;
-
-            self._confModeChanged(ui.item.value);
-        }
-    });
+    if ($("#pnlWebCall .confMode").length)
+        $("#pnlWebCall .confMode").dropdown({
+            select         : function(event, ui) {
+                if (!event.currentTarget)
+                    return;
+                
+                self._confModeChanged(ui.item.value);
+            }
+        });
 
     $("#pnlWebCall .btnSendCommand").click(function(event) {
         var command = $("#pnlWebCall .sendCommand .commandName").val();
@@ -310,7 +320,7 @@ WebCall.ConfUI.prototype._hashChange = function() {
         console.log("WebCall:ConfUI._hashChange()");
 
     this._parseHash();
-    
+
     this.ui.form.populate(app.config.params);
         
     if (app.config.params.debug) {
@@ -410,6 +420,11 @@ WebCall.ConfUI.prototype._updateDisplay = function() {
         this.setMuteLocked(newMuteLocked);
     }
 
+    var newCallStatus = this.confLib.getCallStatus();
+    if (this.getCallStatus() != newCallStatus) {
+        this.setCallStatus(newCallStatus);
+    }
+
     var newStatus = this.confLib.getConfStatus();
     var newConfStartMode = this.confLib.getConfStartMode();
     if (this._confStartMode != newConfStartMode) {
@@ -438,7 +453,7 @@ WebCall.ConfUI.prototype._updateDisplay = function() {
     else
         $("#pnlWebCall .btnHand").removeClass("ui-state-error");
 
-    if (this.confLib.getMusicOnHold())
+    if (this.confLib.getMusicOnHold() && this._status != "running")
         $("#pnlWebCall .btnMusic").addClass("ui-state-error");
     else
         $("#pnlWebCall .btnMusic").removeClass("ui-state-error");
@@ -501,6 +516,7 @@ WebCall.ConfUI.prototype._reset = function() {
     this.setHost(false);
     this.setConfMode("conversation");
     this.setMuteLocked(false);
+    this.setCallStatus(null);
     this.setStatus("pending");
 
     this.ui.closeDialpad();
@@ -532,31 +548,18 @@ WebCall.ConfUI.prototype.getStatus = function() {
     return this._status;
 };
 
+WebCall.ConfUI.prototype.getCallStatus = function() {
+    return this._callStatus;
+};
+
 WebCall.ConfUI.prototype.setHost = function(flag) {
     if (this.debug)
         console.log("WebCall:ConfUI.setHost(" + flag + ")");
 
     this._host = flag;
 
-    var widget = $("#pnlWebCall .confMode").dropdown("widget");
-
-    if (this._host) {
-        $("#pnlWebCall .confMode").dropdown("enable");
-        widget.find(".ui-icon").show();
-        
-        $("#pnlWebCall .btnChangeRole").addClass("btnEndConference");
-        $("#pnlWebCall .btnChangeRole .tooltip").text(app.localeStrings.lblEndConference);
-
-        $("#pnlWebCall .btnLock, #pnlWebCall .btnRecording").button("enable");
-    } else {
-        $("#pnlWebCall .confMode").dropdown("disable");
-        widget.find(".ui-icon").hide();
-        
-        $("#pnlWebCall .btnChangeRole").removeClass("btnEndConference");
-        $("#pnlWebCall .btnChangeRole .tooltip").text(app.localeStrings.lblChangeRole);
-
-        $("#pnlWebCall .btnLock, #pnlWebCall .btnRecording").button("disable");
-    }
+    if (this.setHostDisplay)
+        this.setHostDisplay(flag);
 
     // refresh status
     
@@ -605,7 +608,7 @@ WebCall.ConfUI.prototype.setStatus = function(status) {
     
     if (status == "pending") {
         var start = this.confLib.getConfStartMode();
-        if (this._host && start && start.toLowerCase() == "hostconfirms") {
+        if (this._host && start && start.toLowerCase() == "hostconfirms" && this.getCallStatus() != "recordName") {
             $("#pnlWebCall .btnStartConference").show();
         } else {
             $("#pnlWebCall .confStatus").show();
@@ -613,6 +616,18 @@ WebCall.ConfUI.prototype.setStatus = function(status) {
     } else {
         $("#pnlWebCall .confStatus").show();
     }
+};
+
+WebCall.ConfUI.prototype.setCallStatus = function(status) {
+    if (this.debug)
+        console.log("WebCall:ConfUI.setCallStatus(" + status + ")");
+
+    this._callStatus = status;
+
+    $("#pnlWebCall .btnRecordName").hide();
+    
+    if (status == "recordName")
+        $("#pnlWebCall .btnRecordName").show();        
 };
 
 WebCall.ConfUI.prototype.getMuteLocked = function() {
@@ -625,11 +640,8 @@ WebCall.ConfUI.prototype.setMuteLocked = function(value) {
 
     this._muteLocked = value;
 
-    if (this._muteLocked) {
-        $("#pnlWebCall .btnMute").button("option", "disabled", true);
-    } else {
-        $("#pnlWebCall .btnMute").button("option", "disabled", false);
-    }
+    if (this.setMuteLockedDisplay)
+        this.setMuteLockedDisplay(this._muteLocked);
 };
 
 WebCall.ConfUI.prototype.getConfMode = function() {
@@ -642,9 +654,8 @@ WebCall.ConfUI.prototype.setConfMode = function(value) {
 
     this._confMode = value;
 
-    $("#pnlWebCall .confMode")
-        .val(this._confMode)
-        .dropdown("refresh");
+    if (this.setConfModeDisplay)
+        this.setConfModeDisplay(value);
 };
 
 /* handle hash argument parsing */

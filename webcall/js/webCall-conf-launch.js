@@ -11,9 +11,6 @@ $(document).ready(function() {
 
             app.cookie.create(app.config.WEBCALL_SAVE_FIELDS_COOKIE_NAME, fieldsJSON, app.config.WEBCALL_SAVE_FIELDS_COOKIE_MAX_AGE);
 
-            // TODO
-            //var pinMatch = formData.conferenceID.match(/#\d+$/);
-
             var conferenceID = formData.conferenceID.replace(/[^\d#*]/g, "");
 
             if (!conferenceID.length)
@@ -41,6 +38,42 @@ $(document).ready(function() {
                 ret.fromName = formData.fromName;
 
             return ret;
+        },
+
+        setMuteLockedDisplay : function(flag) {
+            if (flag) {
+                $("#pnlWebCall .btnMute").button("option", "disabled", true);
+            } else {
+                $("#pnlWebCall .btnMute").button("option", "disabled", false);
+            }
+        },
+
+        setHostDisplay : function(flag) {
+            var widget = $("#pnlWebCall .confMode").dropdown("widget");
+
+            if (flag) {
+                $("#pnlWebCall .confMode").dropdown("enable");
+                widget.find(".ui-icon").show();
+                
+                $("#pnlWebCall .btnChangeRole").addClass("btnEndConference");
+                $("#pnlWebCall .btnChangeRole .tooltip").text(app.localeStrings.lblEndConference);
+
+                $("#pnlWebCall .btnLock, #pnlWebCall .btnRecording").button("enable");
+            } else {
+                $("#pnlWebCall .confMode").dropdown("disable");
+                widget.find(".ui-icon").hide();
+                
+                $("#pnlWebCall .btnChangeRole").removeClass("btnEndConference");
+                $("#pnlWebCall .btnChangeRole .tooltip").text(app.localeStrings.lblChangeRole);
+
+                $("#pnlWebCall .btnLock, #pnlWebCall .btnRecording").button("disable");
+            }
+        },
+
+        setConfModeDisplay : function(value) {
+            $("#pnlWebCall .confMode")
+                .val(this._confMode)
+                .dropdown("refresh");
         }
     });
 

@@ -1,6 +1,6 @@
 "use strict";
 
-if (!window.webCall) window.webCall = {};
+if (!window.WebCall) window.WebCall = {};
 
 WebCall.UI = function(options) {
     this.debug = 1;
@@ -70,50 +70,43 @@ WebCall.UI = function(options) {
     });
 
     this.features = this.client.getSupportedFeatures();
-
-    if (this.features.changeSettings) {
-        this._settingsDiv.find(".unsupported").hide();
-        this._settingsDiv.find(".supported").show();
-    } else {
-        this._settingsDiv.find(".unsupported").show();
-        this._settingsDiv.find(".supported").hide();
-    }
+    this._setSupportedFeatures();
 
     this._setupEvents();
     this._drawLoop();
 
-    this.form = new Form(Object.keys(app.config.params), "wp_");
+    if (app.config.WEBCALL_SAVE_FIELDS_COOKIE_NAME) {
+        this.form = new Form(Object.keys(app.config.params), "wp_");
 
-    var saveFieldsCookie = app.cookie.read(app.config.WEBCALL_SAVE_FIELDS_COOKIE_NAME);
-    if (saveFieldsCookie) {
-        try {
-            var saveFieldsObj = $.parseJSON(saveFieldsCookie);
-            for (var i in saveFieldsObj) {
-                if (app.config.params[i] !== undefined)
-                    app.config.params[i] = saveFieldsObj[i];
+        var saveFieldsCookie = app.cookie.read(app.config.WEBCALL_SAVE_FIELDS_COOKIE_NAME);
+        if (saveFieldsCookie) {
+            try {
+                var saveFieldsObj = $.parseJSON(saveFieldsCookie);
+                for (var i in saveFieldsObj) {
+                    if (app.config.params[i] !== undefined)
+                        app.config.params[i] = saveFieldsObj[i];
+                }
+            } catch (e) {
             }
-        } catch (e) {
         }
-    }
 
-    this.form.populate(app.config.params);
+        this.form.populate(app.config.params);
+    }
 
     // set initial state
     this._setState("disconnected");
 };
 
-WebCall.UI.prototype.connect = function() {
+WebCall.UI.prototype.connect = function(connectParams) {
     if (this.debug)
-        console.log("WebCall:UI.connect()");
+        console.log("WebCall:UI.connect()", connectParams);
 
-    var connectData = this._getConnectParams();
-
-    if (typeof connectData === "string") {
-        this._setState("error", connectData);
+    if (typeof connectParams === "string") {
+        this._setState("error", connectParams);
         return;
     }
 
-    this.client.connect(connectData);
+    this.client.connect(connectParams);
 };
 
 WebCall.UI.prototype._reset = function() {
@@ -167,11 +160,14 @@ WebCall.UI.prototype._setState = function(state, errorCode) {
         break;
 
     case "error":
-        $("#pnlWebCall .msgError div").text(app.errors[errorCode]);
-        $("#pnlWebCall .error").show();
-
+        this.displayError(errorCode);
         break;
     }
+};
+
+WebCall.UI.prototype.displayError = function(errorCode) {
+    $("#pnlWebCall .msgError div").text(app.errors[errorCode]);
+    $("#pnlWebCall .error").show();
 };
 
 WebCall.UI.prototype.toggleMute = function() {
@@ -279,31 +275,48 @@ WebCall.UI.prototype._openSettings = function() {
     $("#pnlWebCall .pnlSettings").show();
 };
 
-WebCall.UI.prototype.closeSettings = function() {
+WebCall.UI.prototype.saveSettings = function() {
     if (this.features.changeSettings) {
-        var data = this._optionsForm.getData();
-        console.log(data);
-        var sourceId = null;
-               
-        if (this._validSources.length) {
-            var radio = this._settingsDiv.find(".sources input:checked");
-            if (radio.length)
-                sourceId = radio.data("sourceId");
-        }
+        var data = this._getNewSettings();
+        var sourceId = this._getNewSourceId();
 
         this.client.setAudioOptions(data);
         this.client.setAudioSourceId(sourceId);
         this.client.getUserMedia();
     }
     
-    this._closeSettings();
+    this.closeSettings();
 };
 
-WebCall.UI.prototype._closeSettings = function() {
+WebCall.UI.prototype.closeSettings = function() {
     this._settingsOpen = false;
 
     $("#pnlWebCall .pnlSettings").hide();
     $("#pnlWebCall .connected").show();
+};
+
+WebCall.UI.prototype._getNewSettings = function() {
+    return this._optionsForm.getData();    
+};
+
+WebCall.UI.prototype._getNewSourceId = function() {
+    var sourceId = null;
+               
+    var radio = this._settingsDiv.find(".sources input:checked");
+    if (radio.length)
+        sourceId = radio.data("sourceId");
+
+    return sourceId;
+};
+
+WebCall.UI.prototype._setSupportedFeatures = function() {
+    if (this.features.changeSettings) {
+        this._settingsDiv.find(".unsupported").hide();
+        this._settingsDiv.find(".supported").show();
+    } else {
+        this._settingsDiv.find(".unsupported").show();
+        this._settingsDiv.find(".supported").hide();
+    }
 };
 
 WebCall.UI.prototype.getSourcesSuccess = function(sources) {
@@ -313,9 +326,19 @@ WebCall.UI.prototype.getSourcesSuccess = function(sources) {
         var cur = sources[i];
 
         if (cur.kind == "audio" && cur.label.length > 0)
-            this._validSources.push(cur);
+            this._validSources.push({
+                id    : cur.id,
+                kind  : cur.kind,
+                label : cur.label
+            });
     }
 
+    this.populateSettingsForm();
+
+    this._openSettings();
+};
+
+WebCall.UI.prototype.populateSettingsForm = function() {
     var currentSourceId = this.client.getAudioSourceId();
 
     this._settingsDiv.find(".dynamic").remove();
@@ -344,8 +367,6 @@ WebCall.UI.prototype.getSourcesSuccess = function(sources) {
         this._settingsDiv.find(".sources").hide();
 
     this._optionsForm.populate(this.client.getAudioOptions());
-
-    this._openSettings();
 };
 
 WebCall.UI.prototype._startTimer = function() {
@@ -392,6 +413,20 @@ WebCall.UI.prototype.closeDialpad = function() {
     $("#pnlWebCall .divDialpad").slideUp();
 };
 
+WebCall.UI.prototype.dtmf = function(digit) {
+    var elem = $("#pnlWebCall .audDtmf").get(0);
+
+    elem.pause();
+    elem.currentTime = 0;
+    elem.play();
+
+    this.client.sendDTMF(digit);
+};
+
+WebCall.UI.prototype.playTestSound = function() {
+    $(".audTestSound").get(0).play();
+};
+
 WebCall.UI.prototype._updateTimer = function() {
     $("#pnlWebCall .timer").text(this._formatDuration(this._timerVal, true));
 };
@@ -433,7 +468,7 @@ WebCall.UI.prototype._setupEvents = function() {
     $("#pnlWebCall .btnConnect").click(function(event) {
         $(this).blur();
         
-        self.connect();
+        self.connect(self._getConnectParams());
     });
 
     $("#pnlWebCall .btnDisconnect").click(function(event) {
@@ -453,7 +488,7 @@ WebCall.UI.prototype._setupEvents = function() {
         $(this).blur();
 
         if (self.state == "connected" && self._settingsOpen)
-            self.closeSettings();
+            self.saveSettings();
     });
 
     $("#pnlWebCall .btnMute").click(function(event) {
@@ -464,13 +499,8 @@ WebCall.UI.prototype._setupEvents = function() {
         self._emitEvent("toggleHold");
     });
 
-    $("#pnlWebCall .button.dtmf").click(this.client, function(event) {
+    $("#pnlWebCall .button.dtmf").click(function(event) {
         var digit;
-        var elem = $("#pnlWebCall .audDtmf").get(0);
-
-        elem.pause();
-        elem.currentTime = 0;
-        elem.play();
 
         var classes = $(this).attr("class").split(/\s+/);
         for (var i in classes) {
@@ -484,25 +514,29 @@ WebCall.UI.prototype._setupEvents = function() {
         else if (digit == "pound")
             digit = "#";
 
-        event.data.sendDTMF(digit);
+        self.dtmf(digit);
     });
 
     $("#pnlWebCall .btnTestSound").click(function(event) {
         event.preventDefault();
         
-        $(".audTestSound").get(0).play();
+        self.playTestSound();
     });
 
     $("#pnlWebCall .btnSettings").click(this, function(event) {
         event.data.openSettings();
     });
 
-    window.onbeforeunload = function() {
-        if (self.state == "ringing" || self.state == "connected")
-            return app.errors.ERR_WEBCALL_NAVIGATE_AWAY;
-
-        return;
+    window.onbeforeunload = function () {
+        return self._onbeforeunload();
     };
+};
+
+WebCall.UI.prototype._onbeforeunload = function() {
+    if (this.state == "ringing" || this.state == "connected")
+        return app.errors.ERR_WEBCALL_NAVIGATE_AWAY;
+    
+    return;
 };
 
 /* event stuff */

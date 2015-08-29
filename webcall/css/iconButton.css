@@ -1,0 +1,37 @@
+button.btnImg {
+    height : 28px;
+    width  : 28px;
+
+    padding : 0;
+    border : 0;
+
+    cursor : pointer;
+    
+    display : inline-block;
+    vertical-align : middle;
+
+    background-color : transparent;
+    background-position : 0 0;
+    background-repeat   : no-repeat;
+
+    outline : 0;
+}
+
+button.btnImg::-moz-focus-inner {
+    border :0;
+}
+
+button.btnImg:hover {
+    background-position : -32px 0;
+}
+
+button.btnImg:active {
+    background-position : -64px 0;
+}
+
+button.btnImg:disabled {
+    filter  : alpha(opacity=30);
+    opacity : 0.3;
+    background-position : 0 0;
+    cursor : default;
+}

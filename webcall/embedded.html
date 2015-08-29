@@ -1,0 +1,227 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <link type="text/css" rel="stylesheet" href="css/reset.css"/>
+    <link type="text/css" rel="stylesheet" href="css/base.css"/>
+    <link type="text/css" rel="stylesheet" href="css/ext/jquery-ui.css"/>
+    <link type="text/css" rel="stylesheet" href="css/iconButton.css"/>
+    <link type="text/css" rel="stylesheet" href="css/embedded.css"/>
+    <script type="text/javascript" src="js/ext/jquery-1.10.2.js"></script>
+    <script type="text/javascript" src="js/ext/jquery-ui-1.11.4.js"></script>
+    <script type="text/javascript" src="js/ext/jssip-0.7.4.js"></script>
+    <script type="text/javascript" src="js/ext/volume-meter.js"></script>
+    <script type="text/javascript" src="js/form.js"></script>
+    <script type="text/javascript" src="js/webCall-client.js"></script>
+    <script type="text/javascript" src="js/webCall-ui.js"></script>
+    <script type="text/javascript" src="js/webCall-conf-lib.js"></script>
+    <script type="text/javascript" src="js/webCall-conf-ui.js"></script>
+    <script type="text/javascript" src="js/webCall-embedded.js"></script>
+    <script type="text/javascript" src="js/iconButton.js"></script>
+
+    <script type="text/javascript">
+    /* <![CDATA[ */
+
+
+app = {
+    config : {
+        WEBCALL_MIN_GAIN                   : -15,
+        WEBCALL_MAX_GAIN                   : 15,
+        params : {
+            fromName : "",
+            email    : ""
+        }
+    }
+};
+app.localeStrings = {
+"lblMute" : "Mute",
+"lblUnMute" : "Un-Mute",
+"lbl1" : "1",
+"lbl2" : "2",
+"lbl3" : "3",
+"lbl4" : "4",
+"lbl5" : "5",
+"lbl6" : "6",
+"lbl7" : "7",
+"lbl8" : "8",
+"lbl9" : "9",
+"lbl0" : "0",
+"lblStar" : "*",
+"lblPound" : "#",
+"lblPlayTestSound" : "Play Test Sound",
+"lblSendInfoMsg" : "Send Info Msg",
+"lblContentType" : "Content Type",
+"lblName" : "Name",
+"lblCall" : "Call",
+"lblClear" : "Clear",
+"lblEnd" : "End",
+"lblConnected" : "Connected",
+"lblRinging" : "Ringing",
+"lblConnecting" : "Connecting",
+"lblCancel" : "Cancel",
+"lblError" : "Error",
+"lblOK" : "OK",
+"lblMuteSpeaker" : "Mute Speaker",
+"lblUnMuteSpeaker" : "Un-Mute Speaker",
+"lblDisconnected" : "Disconnected",
+"lblHold" : "Hold",
+"lblUnhold" : "Unhold",
+"lblWsURI" : "WS URI",
+"lblFromName" : "From Name",
+"lblFromURI" : "SIP From URI",
+"lblToURI" : "SIP To URI",
+"lblConferenceID" : "Conference ID",
+"lblEmail" : "Email",
+"lblListenOnlyMode" : "Listen Only Mode",
+"lblABC" : "ABC",
+"lblDEF" : "DEF",
+"lblGHI" : "GHI",
+"lblJKL" : "JKL",
+"lblMNO" : "MNO",
+"lblPQRS" : "PQRS",
+"lblTUV" : "TUV",
+"lblWXYZ" : "WXYZ",
+"lblOnHold" : "On Hold",
+"lblMuted" : "Muted",
+"lblFeatureUnsupportedOnYourBrowser" : "This feature is not supported by your browser",
+"lblMicrophoneSource" : "Microphone Source",
+"lblOptions" : "Options",
+"lblAutomaticGainControl" : "Automatic Gain Control",
+"lblNoiseSuppression" : "Noise Suppression",
+"lblEchoCancellation" : "Echo Cancellation",
+"lblDtmfKeypad" : "DTMF Keypad",
+"lblWebCallUnsupported" : "WebCall is not supported by your browser",
+"lblRecording" : "Recording",
+"lblConferenceLocked" : "Conference Locked",
+"lblPending" : "Waiting",
+"lblActive" : "Active",
+"lblMode" : "Mode",
+"lblQuestionAnswer" : "Question & Answer",
+"lblConversation" : "Conversation",
+"lblPresentation" : "Presentation",
+"lblHostsOnly" : "Hosts Only",
+"lblChangeRole" : "Become A Host",
+"lblLock" : "Lock Conference",
+"lblRecordCalls" : "Record Calls",
+"lblHostPin" : "Host PIN",
+"lblUnlock" : "Unlock Conference",
+"lblStartRecording" : "Start Recording",
+"lblStopRecording" : "Stop Recording",
+"lblStartConf" : "Host Confirm",
+"lblHost" : "Host",
+"lblAreYouSureEndConf" : "End Conference?",
+"lblToUriPrefix" : "To URI Prefix",
+"lblToUriSuffix" : "To URI Suffix",
+"lblWebSocketURI" : "Web Socket URI",
+"lblFinishRecording" : "Finish Recording",
+"lblClose" : "Close",
+"lblRaiseHand" : "Raise Hand",
+"lblLowerHand" : "Lower Hand",
+"lblToggleKeypad" : "DTMF Keypad",
+"lblSettings" : "Settings",
+"lblEndConference" : "End Conference",
+"lblMusicOn" : "Music On",
+"lblMusicOff" : "Music Off",
+};
+app.errors = {
+"ERR_INVALID_EMAIL" : "The email address is invalid.",
+"ERR_INVALID_CONFERENCE_ID" : "The Conference ID is invalid.",
+"ERR_WEBCALL_WS_CONNECT_FAILED" : "There was an error connecting to the SIP WebSocket.",
+"ERR_WEBCALL_SIP_CONNECT_FAILED" : "There was an error placing a call through the SIP WebSocket.",
+"ERR_WEBCALL_NAVIGATE_AWAY" : "Are you sure you want to navigate away from this page? Your call will be disconnected",
+"ERR_WEBCALL_STATUS_486" : "The Conference capacity is exceeded.",
+"ERR_WEBCALL_STATUS_406" : "The Conference is locked.",
+"ERR_WEBCALL_STATUS_404" : "The Conference ID is invalid.",
+"ERR_WEBCALL_STATUS_430" : "The PIN is invalid.",
+"ERR_WEBCALL_STATUS_431" : "The Conference is disabled.",
+"ERR_WEBCALL_STATUS_432" : "The Conference is blocked.",
+"ERR_WEBCALL_STATUS_433" : "Toll-Free is disabled.",
+"ERR_WEBCALL_STATUS_434" : "The User ID is invalid.",
+"ERR_WEBCALL_STATUS_480" : "partner validate error / other failure.",
+};
+
+
+    /* ]]> */
+    </script>
+    <title>Web Call</title>
+  </head>
+  <body>
+
+<div id="pnlWebCall">
+  <audio class="audTestSound hidden">
+    <source src="audio/testSound.wav"/>
+  </audio>
+  <audio class="audDtmf hidden">
+    <source src="audio/beep.wav"/>
+  </audio>
+
+  <div class="connected hidden">
+    <!--div class="status">
+      <div class="ringing">Connecting</div>
+    </div-->
+
+    <div class="meters">
+      <div class="output">
+        <img alt="" src="img/embedded/speaker.png" height="20" width="20" class="floatLeft"/>
+        <div class="ctlOutputGain floatLeft"></div>
+        <div class="divClear"></div>
+      </div>
+      <div class="micConnected">
+        <div class="divInputMeter">
+          <img alt="" src="img/embedded/mic.png" height="20" width="20" class="floatLeft"/>
+          <div class="ctlInputMeter floatLeft"></div>
+        </div>
+
+        <div class="muted hidden">Muted</div>
+        <div class="hold hidden">On Hold</div>
+      </div>
+      <div class="divClear"></div>
+      <div class="micDisconnected">Listen Only Mode</div>
+    </div>
+
+    <button class="btnHold btnImg">
+      <span class="tooltip">Hold</span>
+      <span class="tooltipOn">Unhold</span>
+    </button>
+
+    <button class="btnMute btnImg">
+      <span class="tooltip">Mute</span>
+      <span class="tooltipOn">Un-Mute</span>
+    </button>
+
+    <button class="btnHand btnImg">
+      <span class="tooltip">Raise Hand</span>
+      <span class="tooltipOn">Lower Hand</span>
+    </button>
+
+    <button class="btnMusic btnImg">
+      <span class="tooltip">Music On</span>
+      <span class="tooltipOn">Music Off</span>
+    </button>
+
+    <button class="btnSettings btnImg">
+      <span class="tooltip">Settings</span>
+    </button>
+
+    <button class="btnOpenDialpad btnImg">
+      <span class="tooltip">DTMF Keypad</span>
+    </button>
+
+    <button class="btnDisconnect btnImg">
+      <span class="tooltip">End</span>
+    </button>
+  </div>
+
+  <div class="error hidden">
+    <div class="msgError">
+      <div></div>
+    </div>
+
+    <button class="btnClose long">OK</button>
+  </div>
+</div>
+
+
+
+  </body>
+</html>

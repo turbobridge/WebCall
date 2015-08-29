@@ -1,0 +1,65 @@
+#pnlWebCall .inner {
+    margin-left : 10px;
+    width : 220px;
+}
+
+#pnlWebCall .logo {
+    margin-top : 8px;
+}
+
+#pnlWebCall .long {
+    width : 158px;
+}
+
+#pnlWebCall .btnConnect {
+    margin-top  : 20px;
+    margin-left : 28px;
+}
+
+#pnlWebCall .disconnected input {
+    margin-bottom : 4px;
+}
+
+#pnlWebCall .disconnected input, #pnlWebCall .disconnected .label {
+    width : 216px;
+}
+
+#pnlWebCall .divPlayTestSound {
+    text-align : center;
+}
+
+
+/* dtmf dialpad */
+#dlgWebCallDialpad .button {
+    width         : 48px;
+    height        : 36px;
+    margin        : 2px;
+}
+
+#dlgWebCallDialpad .ui-button-text {
+    margin : 0;
+}
+
+#dlgWebCallDialpad .button.left {
+    margin-left : 0;
+}
+
+#dlgWebCallDialpad .button .digit {
+    font-size : 14px;
+}
+
+#dlgWebCallDialpad .button.dtmf_star .digit {
+    font-size : 20px !important;
+}
+
+#dlgWebCallDialpad .button .label {
+    font-weight : normal;
+    font-size   : 10px;
+}
+
+#pnlUnsupported {
+    padding : 10px;
+    font-size : 20px;
+    font-weight : bold;
+    color : #34495E;
+}
