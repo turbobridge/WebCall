@@ -152,8 +152,14 @@ $.extend(WebCall.Client.prototype, {
             }
 
             if (this._localMediaStream) {
-                if (!this._localMediaStream.fake)
-                    this._localMediaStream.stop();
+                if (!this._localMediaStream.fake) {
+                    this._localMediaStream.getTracks().forEach(function(track) {
+                        track.stop();
+                    });
+
+                    if (this._localMediaStream.stop)
+                        this._localMediaStream.stop();
+                }
 
                 this._localMediaStream = null;
             }
@@ -441,7 +447,12 @@ $.extend(WebCall.Client.prototype, {
             };
 
             if (this._localMediaStream) {
-                this._localMediaStream.stop();
+                this._localMediaStream.getTracks().forEach(function(track) {
+                    track.stop();
+                });
+
+                if (this._localMediaStream.stop)
+                    this._localMediaStream.stop();
                 this.session.connection.removeStream(this._localMediaStream);
             }
 
