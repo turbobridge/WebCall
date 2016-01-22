@@ -17,6 +17,7 @@ To support integration with WebRTC and SIP implementations, which provide call r
 * 431 - Conf disabled
 * 432 - Blocked
 * 433 - WebCall Access method is not allowed
+* 434 - Invalid User ID
 * 480 - partner validate error / other failure
 
 If direct parameter is not provided, the call will go through a special WebRTC media forwarding service which will intercept all the re-INVITEs from the bridge. If bridge ID is not provided, the call will be accepted and user will be prompted for bridge ID as on the regular PSTN call. If bridge ID in the URL is invalid, the announcement will be played and user will be asked to re-enter it. This option should be used for testing purposes only.
